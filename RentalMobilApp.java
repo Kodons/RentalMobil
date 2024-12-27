@@ -398,7 +398,7 @@ public class RentalMobilApp {
         for (Pelanggan pelanggan : pelangganList) {
             if (pelanggan.getId().equals(id) && pelanggan.getPassword().equals(password)) {
                 System.out.println("Login berhasil! Selamat datang, " + pelanggan.getNama());
-                customerMenu(pelanggan);  // Call the customer menu after successful login
+                customerMenu(pelanggan);  
                 return;
             }
         }
