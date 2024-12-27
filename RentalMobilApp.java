@@ -1,126 +1,5 @@
-
 import java.util.*;
 
-// Class Mobil
-class Mobil {
-
-    private String id;
-    private String nama;
-    private String status;
-    private double hargaSewa;
-
-    public Mobil(String id, String nama, String status, double hargaSewa) {
-        this.id = id;
-        this.nama = nama;
-        this.status = status;
-        this.hargaSewa = hargaSewa;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getNama() {
-        return nama;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public double getHargaSewa() {
-        return hargaSewa;
-    }
-}
-
-// Class Pelanggan
-class Pelanggan {
-
-    private String id;
-    private String nama;
-    private String password;
-
-    public Pelanggan(String id, String nama, String password) {
-        this.id = id;
-        this.nama = nama;
-        this.password = password;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getNama() {
-        return nama;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-}
-
-// Class Transaksi
-class Transaksi {
-
-    private String idTransaksi;
-    private String idPelanggan;
-    private String idMobil;
-    private double totalBayar;
-    private String tanggal;
-
-    public Transaksi(String idTransaksi, String idPelanggan, String idMobil, double totalBayar, String tanggal) {
-        this.idTransaksi = idTransaksi;
-        this.idPelanggan = idPelanggan;
-        this.idMobil = idMobil;
-        this.totalBayar = totalBayar;
-        this.tanggal = tanggal;
-    }
-
-    public String getIdTransaksi() {
-        return idTransaksi;
-    }
-
-    public String getIdPelanggan() {
-        return idPelanggan;
-    }
-
-    public String getIdMobil() {
-        return idMobil;
-    }
-
-    public double getTotalBayar() {
-        return totalBayar;
-    }
-
-    public String getTanggal() {
-        return tanggal;
-    }
-}
-
-// Class Graph (contoh representasi hubungan mobil dengan lokasi penempatan)
-class Graph {
-
-    private Map<String, List<String>> adjacencyList = new HashMap<>();
-
-    public void addVertex(String lokasi) {
-        adjacencyList.putIfAbsent(lokasi, new ArrayList<>());
-    }
-
-    public void addEdge(String lokasi1, String lokasi2) {
-        adjacencyList.get(lokasi1).add(lokasi2);
-        adjacencyList.get(lokasi2).add(lokasi1);
-    }
-
-    public List<String> getConnections(String lokasi) {
-        return adjacencyList.getOrDefault(lokasi, new ArrayList<>());
-    }
-}
-
-// Main Application Class
 public class RentalMobilApp {
 
     private static TreeMap<String, Mobil> mobilTree = new TreeMap<>();
@@ -165,7 +44,6 @@ public class RentalMobilApp {
                     break;
                 case 4:
                     System.exit(0);
-                    break;
             }
         }
     }
@@ -191,16 +69,19 @@ public class RentalMobilApp {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 ->
+                case 1:
                     manageVehicles();
-                case 2 ->
+                    break;
+                case 2:
                     manageCustomers();
-                case 3 ->
+                    break;
+                case 3:
                     generateReport();
-                case 4 -> {
+                    break;
+                case 4: {
                     return;
                 }
-                default ->
+                default:
                     System.out.println("Pilihan tidak valid!");
             }
         }
@@ -219,16 +100,19 @@ public class RentalMobilApp {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 ->
+                case 1 :
                     displayVehicles();
-                case 2 ->
+                    break;
+                case 2 :
                     addVehicle();
-                case 3 ->
+                    break;
+                case 3 :
                     deleteVehicle();
-                case 4 -> {
+                    break;
+                case 4 : {
                     return;
                 }
-                default ->
+                default :
                     System.out.println("Pilihan tidak valid!");
             }
         }
@@ -302,21 +186,26 @@ public class RentalMobilApp {
             System.out.println("2. Sewa Mobil");
             System.out.println("3. Kembali ke Menu Utama");
             System.out.print("Pilih menu: ");
-    
+
             int choice = scanner.nextInt();
             scanner.nextLine();
-    
+
             switch (choice) {
-                case 1 -> displayAvailableVehicles();
-                case 2 -> rentCar(pelanggan);
-                case 3 -> {
+                case 1 :
+                    displayAvailableVehicles();
+                    break;
+                case 2 :
+                    rentCar(pelanggan);
+                    break;
+                case 3 : {
                     return;
                 }
-                default -> System.out.println("Pilihan tidak valid!");
+                default :
+                    System.out.println("Pilihan tidak valid!");
             }
         }
     }
-    
+
     private static void displayAvailableVehicles() {
         System.out.println("\n=== Daftar Mobil Tersedia ===");
         for (Mobil mobil : mobilTree.values()) {
@@ -326,79 +215,69 @@ public class RentalMobilApp {
             }
         }
     }
-    
+
     private static void rentCar(Pelanggan pelanggan) {
-        // Tampilkan mobil yang tersedia
+
         displayAvailableVehicles();
-        
-        // Pilih mobil
+
         System.out.print("Masukkan ID mobil yang ingin disewa: ");
         String idMobil = scanner.nextLine();
-        
+
         Mobil selectedCar = mobilTree.get(idMobil);
         if (selectedCar == null || !selectedCar.getStatus().equals("Tersedia")) {
             System.out.println("Mobil tidak tersedia!");
             return;
         }
-        
-        // Input tanggal sewa
+
         System.out.print("Masukkan tanggal mulai sewa (DD/MM/YYYY): ");
         String tanggalMulai = scanner.nextLine();
         System.out.print("Masukkan jumlah hari sewa: ");
         int jumlahHari = scanner.nextInt();
         scanner.nextLine();
-        
-        // Hitung total pembayaran
+
         double totalBayar = selectedCar.getHargaSewa() * jumlahHari;
-        
-        // Tampilkan detail pembayaran
+
         System.out.println("\n=== Detail Pembayaran ===");
         System.out.println("Mobil: " + selectedCar.getNama());
         System.out.println("Harga per hari: Rp" + selectedCar.getHargaSewa());
         System.out.println("Jumlah hari: " + jumlahHari);
         System.out.println("Total pembayaran: Rp" + totalBayar);
-        
-        // Konfirmasi pembayaran
+
         System.out.print("Konfirmasi pembayaran (Y/N)? ");
         String konfirmasi = scanner.nextLine();
-        
+
         if (konfirmasi.equalsIgnoreCase("Y")) {
-            // Generate ID transaksi
             String idTransaksi = "TRX" + System.currentTimeMillis();
-            
-            // Buat transaksi baru
+
             Transaksi transaksi = new Transaksi(
-                idTransaksi,
-                pelanggan.getId(),
-                selectedCar.getId(),
-                totalBayar,
-                tanggalMulai
+                    idTransaksi,
+                    pelanggan.getId(),
+                    selectedCar.getId(),
+                    totalBayar,
+                    tanggalMulai
             );
-            
-            // Update status mobil
+
             selectedCar.setStatus("Disewa");
-            
-            // Tambahkan ke list transaksi
+
             transaksiList.add(transaksi);
-            
+
             System.out.println("Pembayaran berhasil!");
             System.out.println("ID Transaksi: " + idTransaksi);
         } else {
             System.out.println("Pembayaran dibatalkan.");
         }
     }
-    
-    // Update method customerLogin to use the new customerMenu
+
     private static void customerLogin() {
         System.out.print("Masukkan ID Pelanggan: ");
         String id = scanner.nextLine();
         System.out.print("Masukkan Password: ");
         String password = scanner.nextLine();
-    
+
         for (Pelanggan pelanggan : pelangganList) {
             if (pelanggan.getId().equals(id) && pelanggan.getPassword().equals(password)) {
                 System.out.println("Login berhasil! Selamat datang, " + pelanggan.getNama());
-                customerMenu(pelanggan);  
+                customerMenu(pelanggan);
                 return;
             }
         }
