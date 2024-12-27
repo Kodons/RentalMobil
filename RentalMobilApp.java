@@ -295,15 +295,110 @@ public class RentalMobilApp {
         System.out.println("Registrasi berhasil! Pelanggan telah ditambahkan.");
     }
 
+    private static void customerMenu(Pelanggan pelanggan) {
+        while (true) {
+            System.out.println("\n=== Menu Customer ===");
+            System.out.println("1. Lihat Daftar Mobil");
+            System.out.println("2. Sewa Mobil");
+            System.out.println("3. Kembali ke Menu Utama");
+            System.out.print("Pilih menu: ");
+    
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+    
+            switch (choice) {
+                case 1 -> displayAvailableVehicles();
+                case 2 -> rentCar(pelanggan);
+                case 3 -> {
+                    return;
+                }
+                default -> System.out.println("Pilihan tidak valid!");
+            }
+        }
+    }
+    
+    private static void displayAvailableVehicles() {
+        System.out.println("\n=== Daftar Mobil Tersedia ===");
+        for (Mobil mobil : mobilTree.values()) {
+            if (mobil.getStatus().equals("Tersedia")) {
+                System.out.printf("ID: %s, Nama: %s, Harga per Hari: Rp%.2f\n",
+                        mobil.getId(), mobil.getNama(), mobil.getHargaSewa());
+            }
+        }
+    }
+    
+    private static void rentCar(Pelanggan pelanggan) {
+        // Tampilkan mobil yang tersedia
+        displayAvailableVehicles();
+        
+        // Pilih mobil
+        System.out.print("Masukkan ID mobil yang ingin disewa: ");
+        String idMobil = scanner.nextLine();
+        
+        Mobil selectedCar = mobilTree.get(idMobil);
+        if (selectedCar == null || !selectedCar.getStatus().equals("Tersedia")) {
+            System.out.println("Mobil tidak tersedia!");
+            return;
+        }
+        
+        // Input tanggal sewa
+        System.out.print("Masukkan tanggal mulai sewa (DD/MM/YYYY): ");
+        String tanggalMulai = scanner.nextLine();
+        System.out.print("Masukkan jumlah hari sewa: ");
+        int jumlahHari = scanner.nextInt();
+        scanner.nextLine();
+        
+        // Hitung total pembayaran
+        double totalBayar = selectedCar.getHargaSewa() * jumlahHari;
+        
+        // Tampilkan detail pembayaran
+        System.out.println("\n=== Detail Pembayaran ===");
+        System.out.println("Mobil: " + selectedCar.getNama());
+        System.out.println("Harga per hari: Rp" + selectedCar.getHargaSewa());
+        System.out.println("Jumlah hari: " + jumlahHari);
+        System.out.println("Total pembayaran: Rp" + totalBayar);
+        
+        // Konfirmasi pembayaran
+        System.out.print("Konfirmasi pembayaran (Y/N)? ");
+        String konfirmasi = scanner.nextLine();
+        
+        if (konfirmasi.equalsIgnoreCase("Y")) {
+            // Generate ID transaksi
+            String idTransaksi = "TRX" + System.currentTimeMillis();
+            
+            // Buat transaksi baru
+            Transaksi transaksi = new Transaksi(
+                idTransaksi,
+                pelanggan.getId(),
+                selectedCar.getId(),
+                totalBayar,
+                tanggalMulai
+            );
+            
+            // Update status mobil
+            selectedCar.setStatus("Disewa");
+            
+            // Tambahkan ke list transaksi
+            transaksiList.add(transaksi);
+            
+            System.out.println("Pembayaran berhasil!");
+            System.out.println("ID Transaksi: " + idTransaksi);
+        } else {
+            System.out.println("Pembayaran dibatalkan.");
+        }
+    }
+    
+    // Update method customerLogin to use the new customerMenu
     private static void customerLogin() {
         System.out.print("Masukkan ID Pelanggan: ");
         String id = scanner.nextLine();
         System.out.print("Masukkan Password: ");
         String password = scanner.nextLine();
-
+    
         for (Pelanggan pelanggan : pelangganList) {
             if (pelanggan.getId().equals(id) && pelanggan.getPassword().equals(password)) {
                 System.out.println("Login berhasil! Selamat datang, " + pelanggan.getNama());
+                customerMenu(pelanggan);  
                 return;
             }
         }
