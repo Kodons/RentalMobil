@@ -1,5 +1,103 @@
 import java.util.*;
 
+
+class Mobil {
+
+    private String id;
+    private String nama;
+    private String status;
+    private double hargaSewa;
+
+    public Mobil(String id, String nama, String status, double hargaSewa) {
+        this.id = id;
+        this.nama = nama;
+        this.status = status;
+        this.hargaSewa = hargaSewa;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public double getHargaSewa() {
+        return hargaSewa;
+    }
+}
+
+class Pelanggan {
+
+    private String id;
+    private String nama;
+    private String password;
+
+    public Pelanggan(String id, String nama, String password) {
+        this.id = id;
+        this.nama = nama;
+        this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}
+
+class Transaksi {
+
+    private String idTransaksi;
+    private String idPelanggan;
+    private String idMobil;
+    private double totalBayar;
+    private String tanggal;
+
+    public Transaksi(String idTransaksi, String idPelanggan, String idMobil, double totalBayar, String tanggal) {
+        this.idTransaksi = idTransaksi;
+        this.idPelanggan = idPelanggan;
+        this.idMobil = idMobil;
+        this.totalBayar = totalBayar;
+        this.tanggal = tanggal;
+    }
+
+    public String getIdTransaksi() {
+        return idTransaksi;
+    }
+
+    public String getIdPelanggan() {
+        return idPelanggan;
+    }
+
+    public String getIdMobil() {
+        return idMobil;
+    }
+
+    public double getTotalBayar() {
+        return totalBayar;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+}
+
 public class RentalMobilApp {
 
     private static TreeMap<String, Mobil> mobilTree = new TreeMap<>();
@@ -191,17 +289,12 @@ public class RentalMobilApp {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 :
-                    displayAvailableVehicles();
-                    break;
-                case 2 :
-                    rentCar(pelanggan);
-                    break;
-                case 3 : {
+                case 1 -> displayAvailableVehicles();
+                case 2 -> rentCar(pelanggan);
+                case 3 -> {
                     return;
                 }
-                default :
-                    System.out.println("Pilihan tidak valid!");
+                default -> System.out.println("Pilihan tidak valid!");
             }
         }
     }
